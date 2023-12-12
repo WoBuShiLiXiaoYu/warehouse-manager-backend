@@ -1,0 +1,54 @@
+# 端口、项目路径
+server:
+  port: 9999
+  servlet:
+    context-path: /warehouse
+  address: 0.0.0.0
+
+# spring 配置
+spring:
+  application:
+    name: warehouse
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/db_warehouse?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 779462
+  redis:
+    port: 6379
+    host: 127.0.0.1
+    database: 0
+
+
+
+
+# mybatis-plus 配置
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.work.warehousemanager.entity
+  global-config:
+    db-config:
+      logic-delete-field: isDelete # 全局逻辑删除的实体字段名
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+
+
+# 自定义属性
+# token 过期时间
+warehouse:
+  expire-time: 28800
+
+# 图片上传位置
+file:
+  upload-path: classpath:static/img/upload
+# 上传图片保存到数据库的访问路径的目录路径
+  access-path: /img/upload/
+# 文件下载路径
+  download-path: E:\\CRM\\file\\excel\\
+
+
+# 盐值
+config:
+  password-salt: hjhfj103jhwf84hjgbuiu67653vyhugy

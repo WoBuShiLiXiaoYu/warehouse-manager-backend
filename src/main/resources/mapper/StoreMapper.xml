@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.work.warehousemanager.mapper.StoreMapper">
+
+    <resultMap id="BaseResultMap" type="com.work.warehousemanager.entity.Store">
+            <id property="storeId" column="store_id" jdbcType="INTEGER"/>
+            <result property="storeName" column="store_name" jdbcType="VARCHAR"/>
+            <result property="storeNum" column="store_num" jdbcType="VARCHAR"/>
+            <result property="storeAddress" column="store_address" jdbcType="VARCHAR"/>
+            <result property="concat" column="concat" jdbcType="VARCHAR"/>
+            <result property="phone" column="phone" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        store_id,store_name,store_num,
+        store_address,concat,phone
+    </sql>
+    <select id="selectCountVo" resultType="com.work.warehousemanager.vo.StoreCountVo">
+        select t1.store_id as storeId, t1.store_name as storeName, ifnull(sum(product_invent), 0) as totalInvent
+        from store t1
+        inner join product t2
+        on t1.store_id = t2.store_id
+        group by t1.store_id, t1.store_name
+    </select>
+
+    <select id="selectCountByCriteria" resultType="java.lang.Integer">
+        select count(*)
+        from store
+        <where>
+            <if test="store.storeName != null and store.storeName != ''">
+                and store_name like concat('%', #{store.storeName}, '%')
+            </if>
+            <if test="store.storeAddress != null and store.storeAddress != ''">
+                and store_address like concat('%', #{store.storeAddress}, '%')
+            </if>
+            <if test="store.concat != null and store.concat != ''">
+                and store_concat like concat('%', #{store.concat}, '%')
+            </if>
+            <if test="store.phone != null and store.phone != ''">
+                and store_phone = #{store.phone}
+            </if>
+        </where>
+    </select>
+    <select id="selectListByCriteria" resultType="com.work.warehousemanager.entity.Store">
+        select <include refid="Base_Column_List"></include>
+        from store
+        <where>
+            <if test="store.storeName != null and store.storeName != ''">
+                and store_name like concat('%', #{store.storeName}, '%')
+            </if>
+            <if test="store.storeAddress != null and store.storeAddress != ''">
+                and store_address like concat('%', #{store.storeAddress}, '%')
+            </if>
+            <if test="store.concat != null and store.concat != ''">
+                and store_concat like concat('%', #{store.concat}, '%')
+            </if>
+            <if test="store.phone != null and store.phone != ''">
+                and store_phone = #{store.phone}
+            </if>
+        </where>
+        limit #{page.limitIndex}, #{page.pageSize}
+    </select>
+
+
+</mapper>
